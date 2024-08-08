@@ -1,4 +1,5 @@
 #include <QA.C>
+#include <Trkr_TpcReadoutInit.C>
 
 #include <fun4all/Fun4AllDstOutputManager.h>
 #include <fun4all/Fun4AllInputManager.h>
@@ -130,6 +131,14 @@ void Fun4All_Stream_Combiner(int nEvents = 100,
   vector<string> tpot_infile;
   tpot_infile.push_back(input_tpotfile);
 
+// Initialize tpc readout parameters
+  TpcReadoutInit( runnumber );
+  // Log readout parameters
+  std::cout<< " run: " << runnumber
+	   << " samples: " << TRACKING::reco_tpc_maxtime_sample
+	   << " pre: " << TRACKING::reco_tpc_time_presample
+	   << " vdrift: " << G4TPC::tpc_drift_velocity_reco
+	   << std::endl;
   Fun4AllServer *se = Fun4AllServer::instance();
   se->Verbosity(0);
   recoConsts *rc = recoConsts::instance();
@@ -190,6 +199,7 @@ void Fun4All_Stream_Combiner(int nEvents = 100,
     //   tpc_sngl->DryRun();
     tpc_sngl->SetBcoRange(5);
     tpc_sngl->AddListFile(iter);
+    tpc_sngl->SetMaxTpcTimeSamples(TRACKING::reco_tpc_maxtime_sample);
     in->registerStreamingInput(tpc_sngl, InputManagerType::TPC);
     i++;
     }
