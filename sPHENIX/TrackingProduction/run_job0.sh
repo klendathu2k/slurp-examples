@@ -14,6 +14,8 @@ logdir=${11:-.}
 histdir=${12:-.}
 subdir=${13}
 payload=(`echo ${14} | tr ","  " "`) # array of files to be rsynced
+#--
+export cupsid=${15}
 
 sighandler()
 {
@@ -59,7 +61,7 @@ done
 
 #______________________________________________________________________________________ started __
 #
-./cups.py -r ${runnumber} -s ${segment} -d ${outbase} started
+./cups.py --verbose -r ${runnumber} -s ${segment} -d ${outbase} started
 #_________________________________________________________________________________________________
 
 for i in ${inputs[@]}; do
