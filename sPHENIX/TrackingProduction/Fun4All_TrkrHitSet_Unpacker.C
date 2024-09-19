@@ -19,6 +19,7 @@
 #include <ffamodules/FlagHandler.h>
 #include <mvtxrawhitqa/MvtxRawHitQA.h>
 #include <inttrawhitqa/InttRawHitQA.h>
+#include <inttrawhitqa/InttStreamQA.h>
 #include <tpcqa/TpcRawHitQA.h>
 #include <phool/recoConsts.h>
 
@@ -92,8 +93,11 @@ void Fun4All_TrkrHitSet_Unpacker(
   auto mvtx = new MvtxRawHitQA;
   se->registerSubsystem(mvtx);
 
-  auto intt = new InttRawHitQA;
-  se->registerSubsystem(intt);
+  auto inttrawhitqa = new InttRawHitQA;
+  se->registerSubsystem(inttrawhitqa);
+
+  auto inttstreamqa = new InttStreamQA;
+  se->registerSubsystem(inttstreamqa);
   
   auto tpc = new TpcRawHitQA;
   se->registerSubsystem(tpc);
