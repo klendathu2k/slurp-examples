@@ -49,8 +49,6 @@ void Fun4All_JobC(
   FlagHandler *flag = new FlagHandler();
   se->registerSubsystem(flag);
   
-  G4TRACKING::convert_seeds_to_svtxtracks = false;
-
   std::ifstream ifs(filelist);
   std::string filepath;
   int i = 0;
@@ -79,36 +77,28 @@ void Fun4All_JobC(
   TrackingInit();
 
 
- if (G4TRACKING::convert_seeds_to_svtxtracks)
-  {
-    auto converter = new TrackSeedTrackMapConverter;
-    // Default set to full SvtxTrackSeeds. Can be set to
-    // SiliconTrackSeedContainer or TpcTrackSeedContainer
-    converter->setTrackSeedName("TpcTrackSeedContainer");
-    converter->setFieldMap(G4MAGNET::magfield_tracking);
-    converter->Verbosity(0);
-    se->registerSubsystem(converter);
-  }
-  else
-  {
-    auto deltazcorr = new PHTpcDeltaZCorrection;
-    deltazcorr->Verbosity(0);
-    se->registerSubsystem(deltazcorr);
-
-    // perform final track fit with ACTS
-    auto actsFit = new PHActsTrkFitter;
-    actsFit->Verbosity(0);
-    actsFit->commissioning(G4TRACKING::use_alignment);
-    // in calibration mode, fit only Silicons and Micromegas hits
-    actsFit->fitSiliconMMs(G4TRACKING::SC_CALIBMODE);
-    actsFit->setUseMicromegas(G4TRACKING::SC_USE_MICROMEGAS);
-    actsFit->set_pp_mode(TRACKING::pp_mode);
-    actsFit->set_use_clustermover(true);  // default is true for now
-    actsFit->useActsEvaluator(false);
-    actsFit->useOutlierFinder(false);
-    actsFit->setFieldMap(G4MAGNET::magfield_tracking);
-    se->registerSubsystem(actsFit);
-  }
+  auto deltazcorr = new PHTpcDeltaZCorrection;
+  deltazcorr->Verbosity(0);
+  se->registerSubsystem(deltazcorr);
+  
+  // perform final track fit with ACTS
+  auto actsFit = new PHActsTrkFitter;
+  actsFit->Verbosity(0);
+  actsFit->commissioning(G4TRACKING::use_alignment);
+  // in calibration mode, fit only Silicons and Micromegas hits
+  actsFit->fitSiliconMMs(G4TRACKING::SC_CALIBMODE);
+  actsFit->setUseMicromegas(G4TRACKING::SC_USE_MICROMEGAS);
+  actsFit->set_pp_mode(TRACKING::pp_mode);
+  actsFit->set_use_clustermover(true);  // default is true for now
+  actsFit->useActsEvaluator(false);
+  actsFit->useOutlierFinder(false);
+  actsFit->setFieldMap(G4MAGNET::magfield_tracking);
+  se->registerSubsystem(actsFit);
+  
+  
+  auto cleaner = new PHTrackCleaner();
+  cleaner->Verbosity(0);
+  se->registerSubsystem(cleaner);
 
   PHSimpleVertexFinder *finder = new PHSimpleVertexFinder;
   finder->Verbosity(0);

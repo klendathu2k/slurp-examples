@@ -91,6 +91,11 @@ void Fun4All_SingleTrkrHitSet_Unpacker(
       i++;
     }
 
+  if(runNumber>51428)
+    {
+      TRACKING::tpc_zero_supp = true;
+    }
+
   CDBInterface::instance()->Verbosity(1);
 
   rc->set_StringFlag("CDB_GLOBALTAG", dbtag );

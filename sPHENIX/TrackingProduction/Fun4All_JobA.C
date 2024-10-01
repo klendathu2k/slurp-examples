@@ -90,9 +90,8 @@ void Fun4All_JobA(
   auto silicon_Seeding = new PHActsSiliconSeeding;
   silicon_Seeding->Verbosity(0);
   silicon_Seeding->seedAnalysis(false);
-  silicon_Seeding->searchInIntt();
-  silicon_Seeding->setinttRPhiSearchWindow(0.4);
-  silicon_Seeding->setinttZSearchWindow(1.6);
+  silicon_Seeding->setinttRPhiSearchWindow(1.0);
+  silicon_Seeding->setinttZSearchWindow(7.0);
   se->registerSubsystem(silicon_Seeding);
 
   auto merger = new PHSiliconSeedMerger;
@@ -118,8 +117,9 @@ void Fun4All_JobA(
   }
   seeder->Verbosity(0);
   seeder->SetLayerRange(7, 55);
-  seeder->SetSearchWindow(1.5, 0.05);  // (z width, phi width)
+  seeder->SetSearchWindow(2.0, 0.05);  // (z width, phi width)
   seeder->SetMinHitsPerCluster(0);
+  seeder->SetClusAdd_delta_window(3.0,0.06);
   seeder->SetMinClustersPerTrack(3);
   seeder->useFixedClusterError(true);
   seeder->set_pp_mode(TRACKING::pp_mode);
@@ -144,6 +144,17 @@ void Fun4All_JobA(
   cprop->set_pp_mode(TRACKING::pp_mode);
   se->registerSubsystem(cprop);
 
+
+  if (TRACKING::pp_mode)
+  {
+    // for pp mode, apply preliminary distortion corrections to TPC clusters before crossing is known
+    // and refit the trackseeds. Replace KFProp fits with the new fit parameters in the TPC seeds.
+    auto prelim_distcorr = new PrelimDistortionCorrection;
+    prelim_distcorr->set_pp_mode(TRACKING::pp_mode);
+    prelim_distcorr->Verbosity(0);
+    se->registerSubsystem(prelim_distcorr);
+  }
+
   /*
    * Track Matching between silicon and TPC
    */
@@ -156,8 +167,7 @@ void Fun4All_JobA(
   silicon_match->set_z_search_window(5.);
   silicon_match->set_phi_search_window(0.2);
   silicon_match->set_eta_search_window(0.1);
-  silicon_match->set_use_old_matching(true);
-  silicon_match->set_pp_mode(true);
+  silicon_match->set_pp_mode(TRACKING::pp_mode);
   silicon_match->set_test_windows_printout(false);  // used for tuning search windows
   se->registerSubsystem(silicon_match);
 
