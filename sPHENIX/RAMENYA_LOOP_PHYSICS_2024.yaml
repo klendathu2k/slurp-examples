@@ -36,6 +36,7 @@ PHYS_DST_STREAMING_EVENT_run2pp:
              (filename  like '/bbox%/physics_mvtx%-0000.evt'  and lastevent>2 )
            )
                 {run_condition}
+              and runnumber<=53880
 
          group by runnumber
          having
@@ -68,6 +69,7 @@ PHYS_DST_STREAMING_EVENT_run2pp:
              (filename  like '/bbox%/physics_mvtx%.evt'  and lastevent>2 )
            )
                 {run_condition}
+              and runnumber<=53880
 
          group by runnumber
          having
@@ -83,9 +85,9 @@ PHYS_DST_STREAMING_EVENT_run2pp:
          order by runnumber
          )
 
-         select *,'partial run' as runtype from partialrun where runnumber not in ( select runnumber from fullrun ) 
+         select *,'partial run' as runtype from partialrun where runnumber not in ( select runnumber from fullrun )             and runnumber<=53880
               union all 
-         select *,'full run' as runtype from fullrun where true 
+         select *,'full run' as runtype from fullrun where true            and runnumber<=53880
 
               ;
 
@@ -160,6 +162,9 @@ DST_TPCCALIB:
          where 
                 filename     like '/bbox%/TPC%calib%.evt'
                 {run_condition}
+
+              and runnumber<=53880
+
          group by runnumber
          having
                 every(transferred_to_sdcc)                                            
@@ -243,6 +248,7 @@ DST_INTT_EVENT:
            )
                 {run_condition}
            and runnumber>=35590
+           and runnumber<=53880
 
          group by runnumber
          having
@@ -310,6 +316,7 @@ DST_TRKR_HIT_SET_physics:
                 filename like 'DST_STREAMING_EVENT_run2pp_new_2024p002%'
                 {run_condition}
                 and runnumber<=48098
+                and runnumber<=53880
          order by runnumber
                 {limit_condition}
               ;              
@@ -364,6 +371,7 @@ DST_TRKR_CLUSTER_SET_run2pp:
                 filename like 'DST_TRKR_HIT_run2pp_new_2024p004%'
                 {run_condition}
                 and runnumber<=48098
+                and runnumber<=53880
          order by runnumber
                 {limit_condition}
               ;              
@@ -416,6 +424,7 @@ DST_TRKR_SEED_SET_run2pp:
                 filename like 'DST_TRKR_CLUSTER_run2pp_new_2024p004%'
                 {run_condition}
                 and runnumber<=48098
+                and runnumber<=53880
          order by runnumber
                 {limit_condition}
               ;              
@@ -470,6 +479,7 @@ DST_TRKR_TRACKS_SET_run2pp:
            )
            {run_condition}
            and runnumber<=48098
+           and runnumber<=53880
 
          group by runnumber,segment 
 
@@ -537,6 +547,8 @@ DST_TRKR_HIT_SET_physics_2024p005:
                 filename like 'DST_STREAMING_EVENT_run2pp_new_2024p002%'
                 {run_condition}
                 and runnumber>48098 and runnumber<49910
+                and runnumber<=53880
+
          order by runnumber
                 {limit_condition}
               ;              
@@ -588,6 +600,8 @@ DST_TRKR_CLUSTER_SET_run2pp_2024p005:
                 filename like 'DST_TRKR_HIT_run2pp_new_2024p005%'
                 {run_condition}
                 and runnumber>48098
+                and runnumber<=53880
+
          order by runnumber
                 {limit_condition}
               ;              
@@ -637,6 +651,7 @@ DST_TRKR_SEED_SET_run2pp_2024p005:
                 filename like 'DST_TRKR_CLUSTER_run2pp_new_2024p005%'
                 {run_condition}
                 and runnumber>48098
+                and runnumber<=53880
          order by runnumber
                 {limit_condition}
               ;              
@@ -694,6 +709,7 @@ DST_TRKR_TRACKS_SET_run2pp_2024p005:
            )
            {run_condition}
                 and runnumber>48098
+                and runnumber<=53880
 
          group by runnumber,segment 
 
@@ -758,6 +774,7 @@ DST_TRKR_HIT_SET_physics_2024p007:
                 filename like 'DST_STREAMING_EVENT_run2pp_new_2024p002%'
                 {run_condition}
                 and runnumber>=49700
+                and runnumber<=53880
          order by runnumber
                 {limit_condition}
               ;              
@@ -809,6 +826,7 @@ DST_TRKR_CLUSTER_SET_run2pp_2024p007:
                 filename like 'DST_TRKR_HIT_run2pp_new_2024p007%'
                 {run_condition}
                 and runnumber>=49700
+                and runnumber<=53880
          order by runnumber
                 {limit_condition}
               ;              
@@ -860,6 +878,7 @@ DST_TRKR_SEED_SET_run2pp_2024p007:
                 filename like 'DST_TRKR_CLUSTER_run2pp_new_2024p007%'
                 {run_condition}
                 and runnumber>=49700
+                and runnumber<=53880
          order by runnumber
                 {limit_condition}
               ;              
@@ -914,6 +933,7 @@ DST_TRKR_TRACKS_SET_run2pp_2024p007:
            )
            {run_condition}
                 and runnumber>=49700
+                and runnumber<=53880
 
          group by runnumber,segment 
 
@@ -996,6 +1016,7 @@ PHYS_DST_STREAMING_EVENT_run2pp_nomvtx:
              (filename  like '/bbox%/GL1_physics%'       and lastevent>2 )
            )
                 {run_condition}
+              and runnumber<=53880
 
          group by runnumber
          having
@@ -1068,6 +1089,8 @@ PHYS_DST_TPC_EVENT_run2pp:
              (filename  like '/bbox%/GL1_physics%'       and lastevent>2 ) 
            )
          {run_condition}
+              and runnumber<=53880
+
          group by runnumber
          having
                 every(transferred_to_sdcc)   and
@@ -1128,6 +1151,7 @@ PHYS_DST_TPOT_EVENT_run2pp:
              (filename  like '/bbox%/GL1_physics%'       and lastevent>2 )
            )
          {run_condition}
+              and runnumber<=53880
          group by runnumber
          having
                 every(transferred_to_sdcc)   and
@@ -1187,6 +1211,7 @@ PHYS_DST_INTT_EVENT_run2pp:
              (filename  like '/bbox%/GL1_physics%'       and lastevent>2 ) 
            )
          {run_condition}
+              and runnumber<=53880
          group by runnumber
          having
                 every(transferred_to_sdcc)   and
@@ -1248,6 +1273,7 @@ PHYS_DST_MVTX_EVENT_run2pp:
              (filename  like '/bbox%/GL1_physics%'       and lastevent>2 ) 
            )
          {run_condition}
+              and runnumber<=53880
          group by runnumber
          having
                 every(transferred_to_sdcc)   and

@@ -35,6 +35,7 @@ MBD_CALIBRATION:
              (filename  like '/bbox%/%mbd%physics%'      and lastevent>2 )
            )
            {run_condition}
+              and runnumber<=53880
 
          group by runnumber
 
